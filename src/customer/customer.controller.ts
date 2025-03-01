@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, HttpException, Post } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 
 @Controller('customer')
@@ -7,6 +7,7 @@ export class CustomerController {
 
     @Get()
     getAllCustomers() {
+        throw new ForbiddenException('You are not allowed')
         return this.customerService.getAllCustomers()
     }
 

@@ -1,6 +1,7 @@
-import { Logger, NestMiddleware } from "@nestjs/common";
+import { Injectable, Logger, NestMiddleware } from "@nestjs/common";
 import { NextFunction, Request, Response } from "express";
 
+@Injectable()
 export class LoggerMiddleware implements NestMiddleware {
     constructor(private logger: Logger) {}
     use(req: Request, res: Response, next: NextFunction) {
@@ -12,7 +13,7 @@ export class LoggerMiddleware implements NestMiddleware {
             const restime = new Date().getTime() - reqtime;
             
             if(res.statusCode == 200 || res.statusCode == 201) {
-                this.logger.log(`${method}/${ip} ${originalUrl} ${res.statusCode} ${restime}ms`);
+                this.logger.log(`${method} /${ip} ${originalUrl} ${res.statusCode} ${restime}ms`);
             }
         })
         next();
