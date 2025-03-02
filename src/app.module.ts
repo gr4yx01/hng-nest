@@ -5,11 +5,12 @@ import { ProductModule } from './product/product.module';
 import { GlobalModule } from './global/global.module';
 import middlewares from './middlewares';
 import { LoggerMiddleware } from './middlewares/log';
+import { Reflector } from '@nestjs/core';
 
 @Module({
   imports: [CustomerModule, CatsModule, ProductModule, GlobalModule],
   controllers: [],
-  providers: [Logger],
+  providers: [Logger, Reflector],
 })
 
 // To implement middleware
