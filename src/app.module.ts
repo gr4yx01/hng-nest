@@ -6,9 +6,21 @@ import { GlobalModule } from './global/global.module';
 import middlewares from './middlewares';
 import { LoggerMiddleware } from './middlewares/log';
 import { Reflector } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
+import config from './configs/config';
 
 @Module({
-  imports: [CustomerModule, CatsModule, ProductModule, GlobalModule],
+  imports: [
+    CustomerModule, 
+    CatsModule, 
+    ProductModule, 
+    GlobalModule, 
+    ConfigModule.forRoot({
+      cache: true,
+      isGlobal: true,
+      load: [config]
+    })
+  ],
   controllers: [],
   providers: [Logger, Reflector],
 })
