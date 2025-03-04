@@ -6,15 +6,23 @@ import { GlobalModule } from './global/global.module';
 import middlewares from './middlewares';
 import { LoggerMiddleware } from './middlewares/log';
 import { Reflector } from '@nestjs/core';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from './configs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     CustomerModule, 
     CatsModule, 
     ProductModule, 
-    GlobalModule, 
+    GlobalModule,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule], 
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get('CONNECTION_STRING')
+      }),
+      inject: [ConfigService]
+    }),
     ConfigModule.forRoot({
       cache: true,
       isGlobal: true,
