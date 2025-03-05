@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from './configs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
 
 @Module({
   imports: [
@@ -29,9 +30,17 @@ import { CacheModule } from '@nestjs/cache-manager';
       isGlobal: true,
       load: [config]
     }),
-    CacheModule.register({
+    CacheModule.registerAsync({
       isGlobal: true,
-      ttl: 30 * 1000,
+      useFactory: async (configService: ConfigService) => {
+        const store = await redisStore({ socket: {
+          host: configService.get('redis.host'),
+          port: configService.get('redis.port')
+        }})
+
+        return { store }
+      },
+      inject: [ConfigService]
     })
   ],
   controllers: [],

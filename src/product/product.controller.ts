@@ -16,7 +16,7 @@ export class ProductController {
   }
 
   @CacheTTL(60 * 1000)
-  @Get()
+  @Get()  
   getAllProduct() {
     console.log('INSIDE CONTROLLER')
     return this.productService.getAllProducts()
