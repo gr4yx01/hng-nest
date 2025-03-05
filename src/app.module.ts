@@ -9,6 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from './configs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -27,6 +28,10 @@ import { MongooseModule } from '@nestjs/mongoose';
       cache: true,
       isGlobal: true,
       load: [config]
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 30 * 1000,
     })
   ],
   controllers: [],
